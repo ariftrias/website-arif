@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CV - ARIF TRIASMONO</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter&family=Material+Icons" rel="stylesheet" />
+<style>
+  /* Reset & base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  html {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(14px, 1.5vw, 16px);
+    line-height: 1.5;
+    background-color: var(--bg);
+    color: var(--text-primary);
+    scroll-behavior: smooth;
+  }
+  body, #app {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  :root {
+    /* Light theme */
+    --bg: #f8fafc;
+    --bg-glass: rgba(255 255 255 / 0.65);
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --accent: #6366f1;
+    --accent-dark: #4f46e5;
+    --border: #e5e7eb;
+    --shadow: rgba(0,0,0,0.05);
+    --scrollbar-bg: #e5e7eb;
+    --scrollbar-thumb: #9ca3af;
+    --card-bg: #ffffff;
+    --toast-bg: #333;
+  }
+  [data-theme="dark"] {
+    --bg: #111827;
+    --bg-glass: rgba(17 24 39 / 0.75);
+    --text-primary: #d1d5db;
+    --text-secondary: #9ca3af;
+    --accent: #8b5cf6;
+    --accent-dark: #7c3aed;
+    --border: #374151;
+    --shadow: rgba(0,0,0,0.8);
+    --scrollbar-bg: #374151;
+    --scrollbar-thumb: #a78bfa;
+    --card-bg: #1f2937;
+    --toast-bg: #eee;
+  }
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background: var(--scrollbar-bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+  }
+  /* Layout grid */
+  #app {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: 64px 1fr 48px;
+    grid-template-areas: 
+      "header header"
+      "sidebar main"
+      "footer footer";
+    min-height: 100vh;
+  }
+  @media (max-width: 1024px) {
+    #app {
+      grid-template-columns: 280px 1fr;
+    }
+  }
+  @media (max-width: 767px) {
+    #app {
+      grid-template-columns: 1fr;
+      grid-template-rows: 64px 1fr 60px;
+      grid-template-areas:
+        "header"
+        "main"
+        "footer";
+    }
+  }
+
+  /* HEADER */
+  header#header {
+    grid-area: header;
+    position: sticky;
+    top: 0;
+    height: 64px;
+    background: var(--bg-glass);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 12px var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 10;
+  }
+  header#header .brand {
+    font-weight: 900;
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  header#header .brand .material-icons {
+    font-size: 32px;
+    color: var(--accent-dark);
+  }
+  header#header nav {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  header#header nav button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 24px;
+    transition: color 0.3s ease;
+  }
+  header#header nav button:hover,
+  header#header nav button:focus {
+    color: var(--accent);
+    outline: none;
+  }
+  header#header nav button[aria-pressed="true"] {
+    color: var(--accent-dark);
+  }
+  /* SIDEBAR */
+  aside#sidebar {
+    grid-area: sidebar;
+    background: var(--bg-glass);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-right: 1px solid var(--border);
+    box-shadow: inset -4px 0 12px var(--shadow);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px;
+    transition: transform 0.3s ease;
+    z-index: 9;
+  }
+  aside#sidebar.hide {
+    transform: translateX(-100%);
+  }
+  aside#sidebar nav {
+    flex-grow: 1;
+  }
+  aside#sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  aside#sidebar nav ul li {
+    margin-bottom: 24px;
+  }
+  aside#sidebar nav ul li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: clamp(0.9rem, 1vw, 1.1rem);
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 12px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  aside#sidebar nav ul li a .material-icons {
+    font-size: 20px;
+    color: var(--accent-dark);
+  }
+  aside#sidebar nav ul li a.active,
+  aside#sidebar nav ul li a:hover,
+  aside#sidebar nav ul li a:focus {
+    background-color: var(--accent);
+    color: white;
+    outline: none;
+  }
+  aside#sidebar nav ul li a.active .material-icons,
+  aside#sidebar nav ul li a:hover .material-icons,
+  aside#sidebar nav ul li a:focus .material-icons {
+    color: white;
+  }
+  /* Notification badge */
+  aside#sidebar nav ul li a .badge {
+    margin-left: auto;
+    background-color: var(--accent-dark);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 9999px;
+  }
+  /* MAIN CONTENT */
+  main#main {
+    grid-area: main;
+    padding: 32px 48px;
+    overflow-y: auto;
+    min-height: calc(100vh - 64px - 48px);
+  }
+  @media (max-width: 767px) {
+    main#main {
+      padding: 24px 24px 80px 24px;
+    }
+  }
+  section.content-section {
+    max-width: 760px;
+    margin: 0 auto 48px;
+  }
+  section.content-section:last-child {
+    margin-bottom: 0;
+  }
+  /* Section titles */
+  section.content-section > h2 {
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    font-weight: 900;
+    color: var(--accent-dark);
+    margin-bottom: 24px;
+    border-left: 6px solid var(--accent);
+    padding-left: 16px;
+  }
+  /* Profile card */
+  #profile-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 12px 32px var(--shadow);
+    display: flex;
+    padding: 24px;
+    gap: 32px;
+    align-items: center;
+  }
+  #profile-card img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    flex-shrink: 0;
+  }
+  #profile-card .profile-info {
+    flex: 1;
+  }
+  #profile-card .profile-info h1 {
+    margin: 0 0 8px;
+    font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+    font-weight: 900;
+    color: var(--accent);
+  }
+  #profile-card .profile-info p {
+    margin: 4px 0;
+    color: var(--text-secondary);
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+  }
+  /* Experience & Education cards */
+  .card {
+    background: var(--card-bg);
+    box-shadow: 0 8px 28px var(--shadow);
+    padding: 24px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    transition: box-shadow 0.3s ease;
+  }
+  .card:hover, .card:focus-within {
+    box-shadow: 0 14px 44px rgba(0,0,0,0.15);
+  }
+  .card header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .card header h3 {
+    margin: 0;
+    font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+    font-weight: 700;
+    color: var(--accent-dark);
+  }
+  .card header time {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-style: normal;
+  }
+  .card p {
+    margin: 8px 0 0;
+    color: var(--text-primary);
+  }
+  /* Search input */
+  #search-experience {
+    margin-bottom: 24px;
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    transition: border-color 0.3s ease;
+  }
+  #search-experience:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+  /* FOOTER */
+  footer#footer {
+    grid-area: footer;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-glass);
+    backdrop-filter: saturate(180%) blur(16px);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -4px 16px var(--shadow);
+    padding: 0 32px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+  footer#footer a {
+    color: var(--accent);
+    text-decoration: none;
+    margin: 0 12px;
+    display: inline-flex;
+    align-items: center;
+  }
+  footer#footer a:hover,
+  footer#footer a:focus {
+    text-decoration: underline;
+    outline: none;
+  }
+  footer#footer a .material-icons {
+    font-size: 20px;
+    margin-right: 4px;
+  }
+  /* Toast Notifications */
+  #toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 1000;
+  }
+  .toast {
+    min-width: 260px;
+    max-width: 320px;
+    background: var(--toast-bg);
+    color: var(--card-bg);
+    padding: 16px 20px;
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+    opacity: 0;
+    transform: translateX(100%);
+    animation-fill-mode: forwards;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .toast.show {
+    animation: slideIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .toast.hide {
+    animation: slideOut 0.4s forwards;
+  }
+  @keyframes slideIn {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes slideOut {
+    to {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+  }
+  /* Utility Classes */
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px; height: 1px; 
+    padding: 0; margin: -1px; 
+    overflow: hidden; 
+    clip: rect(0 0 0 0);
+    white-space: nowrap; 
+    border: 0;
+  }
+  /* Responsive adjustments */
+  @media (max-width: 767px) {
+    aside#sidebar {
+      position: fixed;
+      top: 64px;
+      left: 0;
+      width: 280px;
+      height: calc(100vh - 64px);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      box-shadow: 6px 0 24px rgba(0,0,0,0.3);
+      z-index: 999;
+    }
+    aside#sidebar.show {
+      transform: translateX(0);
+    }
+    /* Overlay for sidebar */
+    #sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0,0,0,0.4);
+      z-index: 998;
+      backdrop-filter: blur(2px);
+    }
+    #sidebar-overlay.show {
+      display: block;
+    }
+    /* Adjust main padding */
+    main#main {
+      padding: 24px;
+    }
+  }
+</style>
+</head>
+<body>
+<div id="app" data-theme="light" aria-live="polite">
+  <header id="header" role="banner">
+    <div class="brand" tabindex="0">
+      <span class="material-icons" aria-hidden="true">badge</span>
+      <span>Arif Triasmono</span>
+    </div>
+    <nav aria-label="Global actions">
+      <button id="btn-toggle-sidebar" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="sidebar">
+        <span class="material-icons" aria-hidden="true">menu</span>
+      </button>
+      <button id="btn-toggle-theme" aria-label="Toggle light and dark theme" aria-pressed="false">
+        <span class="material-icons" aria-hidden="true">dark_mode</span>
+      </button>
+    </nav>
+  </header>
+  <aside id="sidebar" role="navigation" aria-label="Primary navigation">
+    <nav>
+      <ul>
+        <li><a href="#profile" class="active" tabindex="0"><span class="material-icons" aria-hidden="true">person</span> Profile</a></li>
+        <li><a href="#experience" tabindex="-1"><span class="material-icons" aria-hidden="true">work</span> Experience <span class="badge" aria-label="2 job entries">2</span></a></li>
+        <li><a href="#education" tabindex="-1"><span class="material-icons" aria-hidden="true">school</span> Education</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div id="sidebar-overlay" tabindex="-1"></div>
+  <main id="main" role="main" tabindex="0">
+    <section id="profile" class="content-section" aria-labelledby="profile-title">
+      <h2 id="profile-title">Profile</h2>
+      <div id="profile-card" tabindex="0" aria-label="Profile information">
+        <img 
+          src="assets/PAS FOTO 4X6 ARIF TRIASMONO.jpg"
+		  alt="Photograph of Arif Triasmono wearing casual shirt, friendly expression, neutral background"
+		  loading="lazy" />
+        <div class="profile-info">
+          <h1>Arif Triasmono</h1>
+          <p><strong>Professional Summary:</strong> Profesional Maintenance yang berpengalaman dengan lebih dari 4 tahun. Dan masih belajar di Universitas Wijaya Kusuma</p>
+          <p><strong>Contact:</strong> <a href="mailto:info@example.com" aria-label="Send email to Arif Triasmono">arifmonoo695@gmail.com</a></p>
+        </div>
+      </div
+    </section>
+    <section id="experience" class="content-section" aria-labelledby="experience-title">
+      <h2 id="experience-title">Experience</h2>
+      <input 
+        type="search"
+        id="search-experience"
+        aria-label="Search experience by company or role"
+        placeholder="Search experience..."
+        autocomplete="off"
+      />
+      <div id="experience-list" tabindex="0" aria-live="polite" aria-atomic="true">
+        <article class="card" tabindex="0">
+          <header>
+            <h3>Maintenance PT. Toyota Motor Indonesia</h3>
+            <time datetime="2018-05-05">2018 - 2020 (2 tahun)</time>
+          </header>
+          <p>Melakukan pemeliharaan, mencakup serangkaian kegiatan untuk menjaga agar fasilitas, peralatan, dan mesin tetap berfungsi dengan baik dan aman.</p>
+        </article>
+        <article class="card" tabindex="0">
+          <header>
+            <h3>Electrical Engineering PT. Tirta Alam Segar</h3>
+            <time datetime="2022-12-24">2022 - 2023 (1 tahun)</time>
+          </header>
+          <p>Merancang sistem kelistrikan untuk berbagai aplikasi, sirkuit elektronik untuk perangkat, atau sistem kontrol otomatis. </p>
+        </article>
+      </div>
+    </section>
+    <section id="education" class="content-section" aria-labelledby="education-title">
+      <h2 id="education-title">Education</h2>
+      <article class="card" tabindex="0">
+        <header>
+          <h3>Universitas Wijaya Kusuma</h3>
+          <time datetime="2023-07-01">2023 - Sekarang</time>
+        </header>
+        <p>Fakultas Teknik, Jurusan Teknik Elektro.</p>
+      </article>
+    </section>
+  </button>
+  
+<script>
+  (() => {
+    'use strict';
+
+    const app = document.getElementById('app');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const btnToggleSidebar = document.getElementById('btn-toggle-sidebar');
+    const btnToggleTheme = document.getElementById('btn-toggle-theme');
+    const experienceList = document.getElementById('experience-list');
+    const searchInput = document.getElementById('search-experience');
+    const navLinks = sidebar.querySelectorAll('nav ul li a');
+    const toastContainer = document.getElementById('toast-container');
+    const statusIndicator = document.getElementById('status-indicator');
+    let currentTheme = 'light';
+
+    // Sidebar toggle for mobile
+    function toggleSidebar(show) {
+      if (show) {
+        sidebar.classList.add('show');
+        sidebarOverlay.classList.add('show');
+        btnToggleSidebar.setAttribute('aria-expanded', 'true');
+        sidebar.querySelector('a.active').focus();
+        document.body.style.overflow = 'hidden';
+      } else {
+        sidebar.classList.remove('show');
+        sidebarOverlay.classList.remove('show');
+        btnToggleSidebar.setAttribute('aria-expanded', 'false');
+        btnToggleSidebar.focus();
+        document.body.style.overflow = '';
+      }
+    }
+    btnToggleSidebar.addEventListener('click', () => {
+      toggleSidebar(!sidebar.classList.contains('show'));
+    });
+    sidebarOverlay.addEventListener('click', () => {
+      toggleSidebar(false);
+    });
+    // Close sidebar on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && sidebar.classList.contains('show')) {
+        toggleSidebar(false);
+      }
+    });
+
+    // Theme toggle
+    function applyTheme(theme) {
+      currentTheme = theme;
+      app.setAttribute('data-theme', currentTheme);
+      btnToggleTheme.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+      btnToggleTheme.querySelector('span').textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
+      localStorage.setItem('preferredTheme', theme);
+    }
+    btnToggleTheme.addEventListener('click', () => {
+      applyTheme(currentTheme === 'light' ? 'dark' : 'light');
+      showToast(`Switched to ${currentTheme} mode`, 'info');
+    });
+    // Load theme from storage or system preference
+    const savedTheme = localStorage.getItem('preferredTheme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+
+    // Navigation behavior
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Update active
+        navLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        // Hide sidebar on mobile
+        if (window.innerWidth <= 767) toggleSidebar(false);
+        // Set focus to target section
+        const targetId = link.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+          targetSection.scrollIntoView({behavior: 'smooth'});
+          targetSection.focus();
+        }
+      });
+    });
+
+    // Experience search filter
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase().trim();
+      const cards = experienceList.querySelectorAll('.card');
+      let visibleCount = 0;
+      cards.forEach(card => {
+        const h3 = card.querySelector('h3').textContent.toLowerCase();
+        const p = card.querySelector('p').textContent.toLowerCase();
+        if (h3.includes(query) || p.includes(query)) {
+          card.style.display = '';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      if (visibleCount === 0) {
+        experienceList.setAttribute('aria-live', 'polite');
+        experienceList.textContent = 'No experience matches your search.';
+      } else {
+        experienceList.setAttribute('aria-live', 'polite');
+        experienceList.textContent = '';
+        // Restore cards visibility
+        cards.forEach(card => {
+          if (card.style.display === 'none') return;
+          experienceList.appendChild(card);
+        });
+      }
+    });
+
+    // Toast notification system
+    let toastTimeout;
+    function showToast(message, type = 'info', duration = 3000) {
+      clearTimeout(toastTimeout);
+      const toast = document.createElement('div');
+      toast.className = `toast`;
+      toast.setAttribute('role', 'alert');
+      toast.setAttribute('aria-live', 'assertive');
+      toast.innerHTML = `<span class="material-icons" aria-hidden="true">${type === 'error' ? 'error' : 'info'}</span>${message}`;
+      toastContainer.appendChild(toast);
+      // Show animation
+      requestAnimationFrame(() => {
+        toast.classList.add('show');
+      });
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+        toast.classList.add('hide');
+        toast.addEventListener('animationend', () => {
+          toast.remove();
+        });
+      }, duration);
+    }
+
+    // Loading placeholder simulation
+    function simulateLoading() {
+      statusIndicator.textContent = 'Loading CV data...';
+      showToast('Loading CV data...', 'info', 1500);
+      setTimeout(() => {
+        statusIndicator.textContent = 'Ready';
+        showToast('CV loaded successfully', 'info', 2000);
+      }, 1500);
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', e => {
+      if (e.altKey && e.key.toLowerCase() === 't') {
+        e.preventDefault();
+        btnToggleTheme.click();
+      }
+      if (e.altKey && e.key.toLowerCase() === 'm') {
+        e.preventDefault();
+        btnToggleSidebar.click();
+      }
+    });
+
+    // Accessibility: trap focus in sidebar when open on mobile
+    sidebar.addEventListener('keydown', e => {
+      if (sidebar.classList.contains('show') && e.key === 'Tab') {
+        const focusableElements = sidebar.querySelectorAll('a, button, input, [tabindex]:not([tabindex="-1"])');
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
+    });
+
+    // Initial load simulation
+    window.addEventListener('load', () => {
+      simulateLoading();
+    });
+  })();
+</script>
+</body>
+</html>
+
